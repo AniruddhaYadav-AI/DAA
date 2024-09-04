@@ -1,53 +1,43 @@
-Arguing Selection Sort Correctness 
-Selection sort is a simple, comparison-based sorting algorithm. Its correctness can be formally proven through the concepts of loop invariants and termination. 
+Despite having a simple architecture, selection sort is a comparison-based algorithm whose correctness can be formally shown through the use of algorithmic termination and loop invariants. We explain the logic behind this proof below.
 
-1. Loop Invariant
-A loop invariant is a condition that is true before and after every iteration of a loop. In the case of selection sort, the invariant guarantees that after the i-th iteration of the outer loop:
+1. Invariant Loop
+A condition that is true both before and after a loop iteration is known as a loop invariant. The loop invariant for selection sort makes sure that following the i-th iteration of the outer loop:
 
-The subarray arr[0:i] is sorted.
-Every element in the sorted subarray is less than or equal to every element in the unsorted subarray arr[i:n], where n is the length of the array.
-Establishing the Invariant
-Initially, at the start of the first iteration (i = 0), the subarray arr[0:0] is considered trivially sorted (an empty subarray). Hence, the loop invariant holds true.
+Arr[0:i], the subarray, is completely sorted.
+Every element in the remaining unsorted subarray arr[i:n], where n is the array's total length, is less than or equal to every element in this sorted subarray.
+Determining the Invariant: Since the subarray arr[0:0] is empty at the beginning, before the first iteration (i = 0), it can be sorted easily. Consequently, the initial loop invariant holds.
 
-Maintaining the Invariant
-At the beginning of each iteration, selection sort identifies the smallest element in the unsorted portion of the array and swaps it with the first element of that portion. This ensures that after the i-th iteration, the element at index i is the smallest element in the remaining array. Therefore, arr[0:i+1] is sorted, and the invariant holds after every loop iteration.
+Preserving the Invariant: Every time iteration, selection sort locates the smallest element in the array's unsorted section and replaces it with the section's initial element. By doing this step, the subarray arr[0:i+1] stays sorted and the element at index i is the smallest in the array by the end of the i-th iteration. As a result, the loop invariant is maintained during the loop's execution.
+Termination and the Invariant: The loop invariant ensures that arr[0:n-1] is sorted after the loop ends (after n-1 iterations). 
+Given that the final piece slips into position by itself, this suggests that the array as a whole has been sorted. As a result, the process ends with a sorted array.
 
-Termination of the Invariant
-When the loop finishes (after n-1 iterations), the invariant tells us that arr[0:n-1] is sorted, meaning the entire array is sorted because the last element is automatically in the correct position. Thus, the algorithm terminates with a sorted array.
+2. Verification of Accuracy
+The following evidence supports the selection sort's correctness:
 
-2. Proof of Correctness
-We can now argue that the algorithm is correct based on these two points:
+Initialization: The subarray arr[0:0] is easily sorted prior to the first iteration.
+Maintenance: The loop invariant makes sure that all of the items in the sorted subarray are fewer than or equal to those in the unsorted section, and that the sorted subarray expands by one element with each iteration.
+Termination: The array is entirely sorted after n-1 repetitions. The invariant makes sure that every element is in its proper place and that there are no more unsorted items.
 
-Initialization: Before the first iteration, the subarray arr[0:0] is trivially sorted.
-Maintenance: By the loop invariant, after each iteration, the sorted subarray grows by one element, and the elements in the sorted subarray are less than or equal to those in the unsorted subarray.
-Termination: After n-1 iterations, the entire array is sorted because there are no remaining unsorted elements, and the invariant guarantees that all elements are in their correct positions.
-3. Correctness Example
-Consider the array: [64, 25, 12, 22, 11].
+3. An Illustration of Correctness
+Take, for instance, the array [64, 25, 12, 22, 11]:
 
-First iteration (i=0):
+i=0 in the first iteration:
+Eleven is the smallest element of arr[0:5]. The outcomes of swapping 11 for 64 are [11, 25, 12, 22, 64]. Now that the subarray [11] is sorted.
 
-The smallest element in arr[0:5] is 11. Swap 11 with 64, resulting in the array: [11, 25, 12, 22, 64]. The subarray [11] is sorted.
-Second iteration (i=1):
+Iteration two (i=1):
+There are twelve elements in arr[1:5]. If you swap out 12 with 25, you get [11, 12, 25, 22, 64]. [11, 12] are now sorted.
 
-The smallest element in arr[1:5] is 12. Swap 12 with 25, resulting in: [11, 12, 25, 22, 64]. Now, the subarray [11, 12] is sorted.
-Third iteration (i=2):
+Iteration three (i=2):
+22 is the smallest element found in arr[2:5]. The outcomes of swapping 22 for 25 are [11, 12, 22, 25, 64]. We have sorted the subarray [11, 12, 22].
 
-The smallest element in arr[2:5] is 22. Swap 22 with 25, resulting in: [11, 12, 22, 25, 64]. The subarray [11, 12, 22] is sorted.
-Fourth iteration (i=3):
+Iteration four (i=3):
+25 is the smallest element in arr[3:5], and it is already positioned correctly. [11, 12, 22, 25] is sorted as a result.
 
-The smallest element in arr[3:5] is 25, which is already in place. The subarray [11, 12, 22, 25] is sorted.
-Final iteration (i=4):
+Last iteration (where i=4):
+The process stops here since the array has been entirely sorted. [11, 12, 22, 25, 64] is the final array.
 
-The array is already sorted, so the algorithm terminates.
-Final array: [11, 12, 22, 25, 64].
+4. Taking Time Complexity Into Account
+Although selection sort is simple to comprehend and use, it is not very effective. Selection sort always has an O(n^2) time complexity, where n is the number of entries in the array. This inefficiency results from:
 
-4. Time Complexity Consideration
-While selection sort is correct and simple, it is not very efficient. The time complexity of selection sort is always O(n^2), where n is the number of elements in the array. This is because:
-
-There are two nested loops: the outer loop runs n times, and for each iteration of the outer loop, the inner loop runs n-i times to find the minimum element, leading to a quadratic number of comparisons.
-The worst-case and average-case time complexities are the same (O(n^2)) because the algorithm always performs the same number of comparisons, regardless of the initial arrangement of elements. There are no "best-case" improvements like those seen in some other sorting algorithms (e.g., insertion sort with nearly sorted data).
-
-Conclusion
-Selection sort is correct because the loop invariant guarantees that the subarray before the current index is sorted, and the smallest element is always placed in its correct position.
-The algorithm terminates with the entire array sorted, having gone through each element once.
-The time complexity is O(n^2), making it inefficient for large datasets, but it is simple to implement and analyze.
+The approach uses two nested loops: to identify the minimal element, the inner loop iterates n times for each pass, while the outer loop iterates n times. There are a quadratic number of comparisons as a result.
+The number of comparisons is independent of the starting element arrangement, hence the worst-case and average-case time complexities are equally O(n^2). Selection sort does not profit from a "best-case" situation where fewer comparisons could be required, in contrast to other algorithms like insertion sort.
